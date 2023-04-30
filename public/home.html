@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+        integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
+        integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/components/progress.min.js"
+        integrity="sha512-1dbvolKnt2qav51uadcI37seXy7jFaYejuyM5pD/O/S1edPDqsdkVC6JGDJC83nngdEvjQYIhQQ7A9XYLVfH4g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/components/progress.min.css"
+        integrity="sha512-P5wXeU11+EtDbcbk96p7CXNLKeMJCDIHY/48z8eNAl/OOZhEAQZY4MMoErSn5BnMD2Nj+zVrTXUtVTjNWKJftA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>YTBuddy by Machey</title>
+</head>
+
+<body>
+    <div class="flex flex-col justify-center items-center h-screen gap-2">
+        <span class="flex">
+            <h1 class="text-[#FF0000] text-3xl font-bold ">YT</h1>
+            <h1 class="text-blue-500 text-3xl font-bold ">Buddy by&nbsp</h1>
+            <h1 class="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent text-3xl font-bold ">
+                MACHEY</h1>
+        </span>
+        <input type="url" name="url" id="url" placeholder="Enter URL"
+            class="border-2 border-gray-300 rounded-md p-2 m-2">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onclick="download()">Download</button>
+        <div id="iframediv" class="h-0 overflow-hidden transition-all flex flex-col gap-2">
+            <iframe id="iframe" width="560" height="315" src="" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+            <div class="flex justify-center items-center h-auto">
+                <ul class="flex flex-row gap-2">
+                    <li> <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" onclick="comingSoon()"> Clip
+                        </button> </li>
+                    <li>
+                        <select id="fullDownload" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded flex gap-2 z-100">
+                            <option value="default" selected disabled> Download </option>
+                            <option value="mp4">Video MP4</option>
+                            <option value="mp3">Audio MP3</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <div class="hidden" id="progress">
+                <div class="ui indicating progress" id="example2">
+                    <div class="bar">
+                        <div class="progress"> 0% </div>
+                    </div>
+                    <div class="label"> Download Processing </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function comingSoon() {
+                Toastify({
+                    text: "Coming Soon",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "linear-gradient(to right, #ff0000, #ff7f00)",
+                    stopOnFocus: true,
+                }).showToast();
+            }
+
+            function downloadURI(id, uri) {
+                var link = document.createElement("a");
+                link.download = id;
+                link.href = '/downloads/' + uri;
+                link.click();
+            }
+
+            function download() {
+                var iframediv = document.getElementById("iframediv");
+                if (document.getElementById("url").value == "") {
+                    Toastify({
+                        text: "Please enter a URL to download",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #ff0000, #ff7f00)",
+                        stopOnFocus: true,
+                    }).showToast();
+                    return;
+                }
+                var url = document.getElementById("url").value;
+                if (url.includes('youtube.com/watch')){
+                    var id = url.split("v=")[1];
+
+                }
+                if (url.includes('youtu.be')){
+                    var id = url.split("/")[3];
+                }
+                document.getElementById("url").value = id;
+                var iframeURL = "https://www.youtube-nocookie.com/embed/" + id;
+                iframe.src = iframeURL;
+                iframediv.style.height = "auto";
+            }
+
+            $('#fullDownload').change(function() {
+                fullDownload();
+                $('#fullDownload').val("default");
+            })
+
+            function fullDownload() {
+                $('#example2').progress({
+                    percent: 0
+                });
+                var option = document.getElementById("fullDownload").value;
+                const progress = document.getElementById("progress");
+                progress.classList.remove("hidden");
+                const socket = io('http://localhost:3001');
+                var id = document.getElementById("url").value;
+                if (option === 'mp4') {
+                    socket.emit('downloadVideo', id)
+                }
+                if (option === 'mp3') {
+                    socket.emit('downloadAudio', id)
+                }
+                socket.on('progress', (data) => {
+                    console.log(data);
+                    $('#example2').progress({
+                        percent: data
+                    });
+                })
+                socket.on('finished', (data) => {
+                    $('#example2').progress({
+                        percent: 100
+                    });
+                    Toastify({
+                        text: "Download Will Start Soon",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                        stopOnFocus: true,
+                    }).showToast();
+                    progress.classList.add("hidden");
+                    if (option === 'mp4') {
+                        downloadURI(id,"video/" +id+ ".mp4");
+                    }
+                    if (option === 'mp3') {
+                        downloadURI(id, "audio/" +id+ ".mp3");
+                    }
+                })
+                socket.on('error', data => {
+                    Toastify({
+                        text: "Error Occured Please Try Again Later",
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "linear-gradient(to right, #ff0000, #ff7f00)",
+                        stopOnFocus: true,
+                    }).showToast();
+                    progress.classList.add("hidden");
+                })
+            }
+        </script>
+</body>
+
+</html>
