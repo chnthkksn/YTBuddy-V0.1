@@ -1,11 +1,14 @@
-# Videomate 
+# YTbuddy v0.1 
 
 ## Table of Contents
 
 - [About](#about)
 - [Getting Started](#getting_started)
 - [Usage](#usage)
+- [Example](#example)
+- [TODO](#todo)
 - [Contributing](../CONTRIBUTING.md)
+- [Show your support](#support)
 
 ## About <a name = "about"></a>
 
@@ -14,34 +17,49 @@ Format selection and clipping will be added soon
 
 ## Getting Started <a name = "getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them.
+Clone this repo and run the following command in the root directory
 
 ```
-Give examples
+npm install
 ```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
-
+or 
 ```
-Give the example
+yarn install
 ```
-
-And repeat
+after installing the dependencies run the following command to start the server
 
 ```
-until finished
+npm start
 ```
-
-End with an example of getting some data out of the system or using it for a little demo.
+or 
+```
+yarn start
+```
 
 ## Usage <a name = "usage"></a>
 
-Add notes about how to use the system.
+Open browser and go to localhost:3000 <br>
+Enter the youtube video url and click download <br>
+The video will be downloaded in the root directory of the project <br>
+And the video will be deleted from the server after 15 minutes
+
+### Example <a name = "example"></a>
+
+<img src="https://i.ibb.co/5182xGh/72ec3aca-f1b3-4663-8325-b38fd9152859.gif" />
+
+
+### TODO <a name = "todo"></a>
+
+- [ ] Add format selection
+- [ ] Add clipping
+- [ ] Playlist download
+- [x] Add progress bar
+- [x] Add video deletion after 15 minutes
+
+### Contributing <a name = "contributing"></a>
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](www.github.com/chnthkksn/ytbuddy-v0.1/issues). 
+
+### Show your support 
+
+Give a ⭐️ if this project helped you!
